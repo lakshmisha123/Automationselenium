@@ -1,0 +1,56 @@
+package framework;
+
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.testng.Assert;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+import Framework1.capabality;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.AndroidElement;
+
+public class Testcase extends capabality{
+	AndroidDriver<AndroidElement>driver;
+	 @BeforeTest
+    public void bt() throws IOException, InterruptedException {
+		
+    }
+    @Test(enabled=true)
+    public void tc1() throws InterruptedException, IOException
+    {
+    	service=startserver();
+    	 driver=capabilities(deviceName,appPackage,appActivity,platformName,chromeDriver);
+         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+    	
+    	
+         driver.findElement(By.id("com.androidsample.generalstore:id/spinnerCountry")).click();
+         Thread.sleep(3000);
+        driver.findElementByAndroidUIAutomator("new UiScrollable(new UiSelector()).scrollIntoView(text(\"Brazil\"))").click();
+        Thread.sleep(2000);
+        driver.findElement(By.id("com.androidsample.generalstore:id/nameField")).sendKeys("anitha");
+        Thread.sleep(2000);
+        driver.findElement(By.id("com.androidsample.generalstore:id/radioFemale")).click();  
+        Thread.sleep(1000);
+        driver.findElement(By.id("com.androidsample.generalstore:id/btnLetsShop")).click(); 
+         Thread.sleep(1000);
+           driver.findElements(By.xpath("//*[@text='ADD TO CART']")).get(0).click();
+           Thread.sleep(3000);
+         String s= driver.findElementByAndroidUIAutomator("new UiScrollable(new UiSelector()).scrollIntoView(text(\"Converse All Star\"))").getText();
+         System.out.println(s);
+         driver.findElements(By.xpath("//*[@text='ADD TO CART']")).get(1).click();
+         Thread.sleep(3000);
+        driver.findElement(By.id("com.androidsample.generalstore:id/appbar_btn_cart")).click();  
+         Thread.sleep(5000);
+        String s1=driver.findElement(By.xpath("//*[@text='Converse All Star']")).getText();
+         Thread.sleep(2000);
+         System.out.println(s1);
+         Thread.sleep(3000);
+        Assert.assertEquals(s,s1);
+        service.stop();
+        
+    }
+
+}
